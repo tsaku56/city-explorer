@@ -1,0 +1,15 @@
+body {
+  font-family: "Courier New", Courier, monospace;
+  margin: 0;
+  background-color: rgb(102, 107, 106);
+  color: white;
+}
+
+.App {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
