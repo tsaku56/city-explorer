@@ -12,7 +12,7 @@ function App() {
 
   async function getLocation() {
     try {
-      const API = `https://eu1.locationiq.com/v1/search?key=${REACT_APP_API_KEY}&q=${searchQuery}&format=json`;
+      const API = `https://eu1.locationiq.com/v1/search?key=${process.env.REACT_APP_API_KEY}&q=${searchQuery}&format=json`;
       const res = await axios.get(API);
       setLocation(res.data[0]);
     } catch (error) {
@@ -26,9 +26,8 @@ function App() {
       <input onChange={handleChange} placeholder="Place name" />
       <button onClick={getLocation}>Explore</button>
       <h2>{location.display_name}</h2>
-      <h2>
-        Latitude={location.la}Longitude{location.lon}
-      </h2>
+      <h2>Latitude={location.lat}</h2>
+      <h2>Longitude={location.lon}</h2>
     </div>
   );
 }
