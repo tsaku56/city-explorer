@@ -5,7 +5,8 @@ import { useState } from "react";
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [location, setLocation] = useState({});
-  const [img, setIMG] = useState("");
+  const [mapImg, setMapImg] = useState("");
+  const [apiError, setApiError] = useState("");
 
   function handleChange(event) {
     setSearchQuery(event.target.value);
@@ -14,12 +15,20 @@ function App() {
   async function getLocation() {
     try {
       const API = `https://eu1.locationiq.com/v1/search?key=${process.env.REACT_APP_API_KEY}&q=${searchQuery}&format=json`;
-      // const imageURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_TOKEN}&center=${location.lat},${location.lon}$zoom=12&size=600x400&format=png`
       const res = await axios.get(API);
       setLocation(res.data[0]);
+      handleMap(res.data[0]);
     } catch (error) {
       console.log(error);
+      setApiError(error.message);
+      setLocation({});
+      setMapImg("");
     }
+  }
+
+  function handleMap(data) {
+    const API = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_KEY}&center=${data.lat},${data.lon}&zoom=12`;
+    setMapImg(API);
   }
 
   return (
@@ -29,9 +38,10 @@ function App() {
       <input onChange={handleChange} placeholder="Place name" />
       <button onClick={getLocation}>Explore</button>
       <h2>{location.display_name}</h2>
-      <h2>
+      <p>
         Latitude={location.lat} Longitude={location.lon}
-      </h2>
+      </p>
+      {mapImg && <img src={mapImg} alt="map" />}
     </div>
   );
 }
